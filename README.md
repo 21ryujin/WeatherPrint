@@ -48,7 +48,7 @@ SUNMI V1s、SUNMI V2 PRO
 ※もし上記でうまくいかない場合は、ADBコマンドでもインストール可能です。  
 　adb.exe が事前にインストール済みで、PATHが通っていることが前提となります。  
 　１）SUNMI端末側：のUSBデバックをオンにしておく。  
-　２）SUNMI端末側：USBケーブルでPCに接続、PCの接続を許可する。
+　２）SUNMI端末側：USBケーブルでPCに接続、PCの接続を許可する。  
 　３）PC：「WeatherPrint.apk」を任意のディレクトリに配置。  
 　４）コマンドプロンプトを起動し、１）のディレクトリに移動。  
 　５）adb install WeatherPrint.apk　でインストールを実行。  
