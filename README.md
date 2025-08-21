@@ -6,11 +6,15 @@ SUNMI V Series 向けに開発した天気予報印刷アプリです。
 2025/07/30　Ver 0.9.0　β版をBOOTHで公開  
 2025/08/08　Ver 1.0.0　リリース版をBOOTHとGitHubで公開  
 2025/08/21　Ver 1.0.1　User-Agentの追加、ライブラリ最新化によるリビルト、その他軽微な修正  
+
+## APKの場所  
+https://github.com/21ryujin/WeatherPrint/blob/master/app/release/WeatherPrint.apk
+こちらでダウンロードボタン（右側にある「↓」のアイコン）を押下してダウンロードしてください。  
   
 ## BOOTH URL  
-天気予報印刷 for SUNMI V series（Ver 1.0.0）  
+天気予報印刷 for SUNMI V series  
 https://miulab.booth.pm/items/7240545  
-※手っ取り早くAPKをダウンロードしたい場合は、こちらをご利用いただければと思います。  
+こちらでもAPKを頒布しています（無料でダウンロードできます）。
   
 ## アプリ概要  
 SUNMI V series（サーマルプリンタ内蔵 業務用Androidスマホ）向けに作成した、天気予報を印刷するアプリです。  
