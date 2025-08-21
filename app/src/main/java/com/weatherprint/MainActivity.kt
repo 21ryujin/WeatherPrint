@@ -69,12 +69,7 @@ import com.weatherprint.ConstantParameters.Companion.APP_VERSION
 import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST
 import com.weatherprint.ConstantParameters.Companion.V2_PRO_PRINTER
-import com.weatherprint.DatabaseProvider.getDatabase
 import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.concurrent.thread
 
 /**
@@ -90,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     BluetoothPermission()
                     BluetoothAdminPermission()
                     WeatherPrint(
-                        name = APP_VERSION,
+                        name = "Ver $APP_VERSION",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -133,9 +128,6 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
     val narrowAreaKey = remember { mutableStateOf(AppUiState().narrowAreaKey) }
     val narrowAreaValue = remember { mutableStateOf(AppUiState().narrowAreaValue) }
 
-    // 天気予報APIの取得成否確認用
-    val isGetWeather = remember { mutableStateOf(false) }
-
     // UI状態復元判定用フラグ
     val isDataRecovery = remember { mutableStateOf(AppUiState().isDataRecovery) }
 
@@ -149,14 +141,14 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
             // データがあればSelectしてUI状態を復元、データがなければデフォルト値でInsert
             if (count > 0) {
-                Log.i(APP_LOG_TAG, "Select UiState Databese")
+                Log.i(APP_LOG_TAG, "Select UiState Database")
 
                 // 保存データをSelect
                 val getUiState: UiState? = selectIdUiState(context, 0)
 
                 // 今日の天気 スイッチの保存値を反映
                 if (getUiState?.isToday != null) {
-                    if (getUiState.isToday == true) {
+                    if (getUiState.isToday) {
                         isToday.value = true
                     } else {
                         isToday.value = false
@@ -165,7 +157,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                 // 明日の天気 スイッチの保存値を反映
                 if (getUiState?.isTomorrow != null) {
-                    if (getUiState.isTomorrow == true) {
+                    if (getUiState.isTomorrow) {
                         isTomorrow.value = true
                     } else {
                         isTomorrow.value = false
@@ -174,7 +166,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                 // 明後日の天気 スイッチの保存値を反映
                 if (getUiState?.isAfterTomorrow != null) {
-                    if (getUiState.isAfterTomorrow == true) {
+                    if (getUiState.isAfterTomorrow) {
                         isAfterTomorrow.value = true
                     } else {
                         isAfterTomorrow.value = false
@@ -183,7 +175,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                 // 天気概要 スイッチの保存値を反映
                 if (getUiState?.isOverview != null) {
-                    if (getUiState.isOverview == true) {
+                    if (getUiState.isOverview) {
                         isOverview.value = true
                     } else {
                         isOverview.value = false
@@ -203,7 +195,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                 // 復元フラグを復元済みにセット
                 isDataRecovery.value = true
             } else {
-                Log.i(APP_LOG_TAG, "Insert UiState Databese")
+                Log.i(APP_LOG_TAG, "Insert UiState Database")
 
                 // AppUiStateのデフォルト値でデータをInsert
                 insertUiState(
@@ -536,7 +528,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                         // 天気予報取得実行
                         Log.i(APP_LOG_TAG, "天気予報API リクエスト")
-                        var weatherData = requestWeatherData(narrowAreaKey.value)
+                        val weatherData = requestWeatherData(narrowAreaKey.value)
 
                         // UIの選択状態をdata classに代入
                         weatherData?.isToday = isToday.value
@@ -783,10 +775,10 @@ fun dialogText(
     narrowAreaKey: String,
     narrowAreaValue: String
 ): String {
-    var textToday: String = ""
-    var textTomorrow: String = ""
-    var textAfterTomorrow: String = ""
-    var textOverview: String = ""
+    var textToday: String
+    var textTomorrow: String
+    var textAfterTomorrow: String
+    var textOverview: String
 
     if (isToday) {
         textToday = "✔ 印刷する"
@@ -860,7 +852,7 @@ fun requestWeatherData(narrowAreaKey : String) : WeatherData? {
     // UIとは別にスレッドを立て、join()指定で処理終了を待つことで同期処理にする
     thread {
         // 天気予報APIサービス生成
-        var retroClient: RetrofitClient = RetrofitClient()
+        val retroClient: RetrofitClient = RetrofitClient()
 
         // 天気予報取得
         val response = retroClient.getService().getWeather(narrowAreaKey).execute()

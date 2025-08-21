@@ -9,7 +9,7 @@ class ConstantParameters {
 
     companion object {
         // アプリバージョン
-        const val APP_VERSION: String = "Ver 1.0.0"
+        const val APP_VERSION: String = "1.0.1"
 
         // ログ出力関連
         const val APP_LOG_TAG: String = "WeatherPrintLog"
