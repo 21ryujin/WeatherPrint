@@ -8,7 +8,7 @@ SUNMI V Series 向けに開発した天気予報印刷アプリです。
 2025/08/21　Ver 1.0.1　User-Agentの追加、ライブラリ最新化によるリビルト、その他軽微な修正  
 
 ## APKの場所  
-https://github.com/21ryujin/WeatherPrint/blob/master/app/release/WeatherPrint.apk
+https://github.com/21ryujin/WeatherPrint/blob/master/app/release/WeatherPrint.apk  
 こちらでダウンロードボタン（右側にある「↓」のアイコン）を押下してダウンロードしてください。  
   
 ## BOOTH URL  
@@ -29,7 +29,8 @@ SUNMI V series（サーマルプリンタ内蔵 業務用Androidスマホ）向�
 ・気温（最高・最低）  
 ・降水確率（６時間ごと）  
 ・風の状況（風向きなど）  
-・波の高さ・天気概況（天気の解説）  
+・波の高さ  
+・天気概況（天気の解説）  
   
 ## 動作確認機種  
 SUNMI V1s、SUNMI V2 PRO  
