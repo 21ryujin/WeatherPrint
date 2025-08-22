@@ -58,6 +58,9 @@ class ConnectedThread(
                 // 天気概況を印刷済みかを判定
                 var isOverviewPrinted: Boolean = false
 
+                // 初回の印刷かを判定
+                var isFirstPrint: Boolean = false
+
                 for (i in 0..2) {
 
                     if (i == 0 && !printData.isToday) {
@@ -89,6 +92,12 @@ class ConnectedThread(
                     mmOutStream.flush()
                     sleep(ESC_WAIT_SHORT)
 
+                    // 初回の印刷出力のみ用紙フィード：３行
+                    if (!isFirstPrint) {
+                        mmOutStream.write(ESC_MULTI_FEED)
+                        isFirstPrint = true
+                    }
+
                     // タイトル：今日／明日／明後日の天気
                     mmOutStream.write(ESC_FONT_SIZE_2)
                     mmOutStream.write(ESC_WB_REVERS_ON)
@@ -115,6 +124,9 @@ class ConnectedThread(
                     mmOutStream.write(ESC_ALIGN_CENTER)
                     mmOutStream.write(ESC_UNDER_LINE_ON)
                     multiText(printData.title, true)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
+                    multiText("エリアコード：", false)
+                    singleText(printData.narrowArea, true)
                     mmOutStream.write(ESC_UNDER_LINE_OFF)
                     singleLF()
 
@@ -271,7 +283,9 @@ class ConnectedThread(
                     multiText("天気予報印刷", false)
                     singleText(" for SUNMI V series", true)
                     singleText(">>>> Developed by 21ryujin <<<<", true)
-                    singleLF()
+
+                    // 用紙フィード：３行
+                    mmOutStream.write(ESC_MULTI_FEED)
 
                     // 切り取り線
                     multiText("－－－－－－－－－－－－－－－－", true)

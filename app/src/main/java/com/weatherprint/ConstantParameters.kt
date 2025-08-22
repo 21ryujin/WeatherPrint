@@ -377,243 +377,243 @@ class ConstantParameters {
         // 地域 リスト値（英文）
         val NARROW_AREA_LIST_EN: Map<String, String> = mapOf(
             // 北海道
-            "011000" to "Hokkaido - Wakkanai",
+            "011000" to "Hokkaido" + SEPARATOR + "Wakkanai",
 
-            "013010" to "Hokkaido - Abashiri",
-            "013020" to "Hokkaido - Kitami",
-            "013030" to "Hokkaido - Mombetsu",
+            "013010" to "Hokkaido" + SEPARATOR + "Abashiri",
+            "013020" to "Hokkaido" + SEPARATOR + "Kitami",
+            "013030" to "Hokkaido" + SEPARATOR + "Mombetsu",
 
-            "014010" to "Hokkaido - Nemuro",
-            "014020" to "Hokkaido - Kushiro",
-            "014030" to "Hokkaido - Obihiro",
+            "014010" to "Hokkaido" + SEPARATOR + "Nemuro",
+            "014020" to "Hokkaido" + SEPARATOR + "Kushiro",
+            "014030" to "Hokkaido" + SEPARATOR + "Obihiro",
 
-            "015010" to "Hokkaido - Muroran",
-            "015020" to "Hokkaido - Urakawa",
+            "015010" to "Hokkaido" + SEPARATOR + "Muroran",
+            "015020" to "Hokkaido" + SEPARATOR + "Urakawa",
 
-            "016010" to "Hokkaido - Sapporo",
-            "016020" to "Hokkaido - Iwamizawa",
-            "016030" to "Hokkaido - Kutchancho",
+            "016010" to "Hokkaido" + SEPARATOR + "Sapporo",
+            "016020" to "Hokkaido" + SEPARATOR + "Iwamizawa",
+            "016030" to "Hokkaido" + SEPARATOR + "Kutchancho",
 
-            "017010" to "Hokkaido - Hakodate",
-            "017020" to "Hokkaido - Esashi",
+            "017010" to "Hokkaido" + SEPARATOR + "Hakodate",
+            "017020" to "Hokkaido" + SEPARATOR + "Esashi",
 
             // 青森県
             "020010" to "Aomori",
-            "020020" to "Aomori- Mutsu",
-            "020030" to "Aomori- Hachinohe",
+            "020020" to "Aomori" + SEPARATOR + "Mutsu",
+            "020030" to "Aomori" + SEPARATOR + "Hachinohe",
 
             // 岩手県
-            "030010" to "Iwate - Morioka",
-            "030020" to "Iwate - Miyako",
-            "030030" to "Iwate - Ofunato",
+            "030010" to "Iwate" + SEPARATOR + "Morioka",
+            "030020" to "Iwate" + SEPARATOR + "Miyako",
+            "030030" to "Iwate" + SEPARATOR + "Ofunato",
 
             // 宮城県
-            "040010" to "Miyagi - Sendai",
-            "040020" to "Miyagi - Shiroishi",
+            "040010" to "Miyagi" + SEPARATOR + "Sendai",
+            "040020" to "Miyagi" + SEPARATOR + "Shiroishi",
 
             // 秋田県
             "050010" to "Akita",
-            "050020" to "Akita - Yokote",
+            "050020" to "Akita" + SEPARATOR + "Yokote",
 
             // 山形県
             "060010" to "Yamagata",
-            "060020" to "Yamagata - Yonezawa",
-            "060030" to "Yamagata - Sakata",
-            "060040" to "Yamagata - Shinjo",
+            "060020" to "Yamagata" + SEPARATOR + "Yonezawa",
+            "060030" to "Yamagata" + SEPARATOR + "Sakata",
+            "060040" to "Yamagata" + SEPARATOR + "Shinjo",
 
             // 福島県
             "070010" to "Fukushima",
-            "070020" to "Fukushima - Onahama",
-            "070030" to "Fukushima - Wakamatsu",
+            "070020" to "Fukushima" + SEPARATOR + "Onahama",
+            "070030" to "Fukushima" + SEPARATOR + "Wakamatsu",
 
             // 茨城県
-            "080010" to "Ibaraki - Mito",
-            "080020" to "Ibaraki -Tsuchiura",
+            "080010" to "Ibaraki" + SEPARATOR + "Mito",
+            "080020" to "Ibaraki" + SEPARATOR + "Tsuchiura",
 
             // 栃木県
-            "090010" to "Tochigi - Utsunomiya",
-            "090020" to "Tochigi - Otawara",
+            "090010" to "Tochigi" + SEPARATOR + "Utsunomiya",
+            "090020" to "Tochigi" + SEPARATOR + "Otawara",
 
             // 群馬県
-            "100010" to "Gunma - Maebashi",
-            "100020" to "Gunma - Minakami",
+            "100010" to "Gunma" + SEPARATOR + "Maebashi",
+            "100020" to "Gunma" + SEPARATOR + "Minakami",
 
             // 埼玉県
             "110010" to "Saitama",
-            "110020" to "Saitama - Kumagaya",
-            "110030" to "Saitama - Chichibu",
+            "110020" to "Saitama" + SEPARATOR + "Kumagaya",
+            "110030" to "Saitama" + SEPARATOR + "Chichibu",
 
             // 千葉県
             "120010" to "Chiba",
-            "120020" to "Choshi",
-            "120030" to "Tateyama",
+            "120020" to "Chiba" + SEPARATOR + "Choshi",
+            "120030" to "Chiba" + SEPARATOR + "Tateyama",
 
             // 東京都
             "130010" to "Tokyo",
-            "130020" to "Tokyo -Oshima",
-            "130030" to "Tokyo - Hachijo-jima",
-            "130040" to "Tokyo - Chichi-jima",
+            "130020" to "Tokyo" + SEPARATOR + "Oshima",
+            "130030" to "Tokyo" + SEPARATOR + "Hachijo-jima",
+            "130040" to "Tokyo" + SEPARATOR + "Chichi-jima",
 
             // 神奈川県
-            "140010" to "Kanagawa - Yokohama",
-            "140020" to "Kanagawa - Odawara",
+            "140010" to "Kanagawa" + SEPARATOR + "Yokohama",
+            "140020" to "Kanagawa" + SEPARATOR + "Odawara",
 
             // 新潟県
             "150010" to "Niigata",
-            "150020" to "Niigata - Nagaoka",
-            "150030" to "Niigata - Takada",
-            "150040" to "Niigata - Aikawa",
+            "150020" to "Niigata" + SEPARATOR + "Nagaoka",
+            "150030" to "Niigata" + SEPARATOR + "Takada",
+            "150040" to "Niigata" + SEPARATOR + "Aikawa",
 
             // 富山県
             "160010" to "Toyama",
-            "160020" to "Toyama - Fushiki",
+            "160020" to "Toyama" + SEPARATOR + "Fushiki",
 
             // 石川県
-            "170010" to "Ishikawa - Kanazawa",
-            "170020" to "Ishikawa - Wajima",
+            "170010" to "Ishikawa" + SEPARATOR + "Kanazawa",
+            "170020" to "Ishikawa" + SEPARATOR + "Wajima",
 
             // 福井県
             "180010" to "Fukui",
-            "180020" to "Fukui - Tsuruga",
+            "180020" to "Fukui" + SEPARATOR + "Tsuruga",
 
             // 山梨県
-            "190010" to "Yamanashi - Kofu",
-            "190020" to "Yamanashi - Kawaguchiko",
+            "190010" to "Yamanashi" + SEPARATOR + "Kofu",
+            "190020" to "Yamanashi" + SEPARATOR + "Kawaguchiko",
 
             // 長野県
             "200010" to "Nagano",
-            "200020" to "Nagano - Matsumoto",
-            "200030" to "Nagano - Iida",
+            "200020" to "Nagano" + SEPARATOR + "Matsumoto",
+            "200030" to "Nagano" + SEPARATOR + "Iida",
 
             // 岐阜県
             "210010" to "Gifu",
-            "210020" to "Gifu - Takayama",
+            "210020" to "Gifu" + SEPARATOR + "Takayama",
 
             // 静岡県
             "220010" to "Shizuoka",
-            "220020" to "Shizuoka - Ajiro",
-            "220030" to "Shizuoka - Mishima",
-            "220040" to "Shizuoka - Hamamatsu",
+            "220020" to "Shizuoka" + SEPARATOR + "Ajiro",
+            "220030" to "Shizuoka" + SEPARATOR + "Mishima",
+            "220040" to "Shizuoka" + SEPARATOR + "Hamamatsu",
 
             // 愛知県
-            "230010" to "Aichi - Nagoya",
-            "230020" to "Aichi - Toyohashi",
+            "230010" to "Aichi" + SEPARATOR + "Nagoya",
+            "230020" to "Aichi" + SEPARATOR + "Toyohashi",
 
             // 三重県
-            "240010" to "Mie - Tsu",
-            "240020" to "Mie - Owase",
+            "240010" to "Mie" + SEPARATOR + "Tsu",
+            "240020" to "Mie" + SEPARATOR + "Owase",
 
             // 滋賀県
-            "250010" to "Shiga - Otsu",
-            "250020" to "Shiga - Hikone",
+            "250010" to "Shiga" + SEPARATOR + "Otsu",
+            "250020" to "Shiga" + SEPARATOR + "Hikone",
 
             // 京都府
             "260010" to "Kyoto",
-            "260020" to "Kyoto - Maizuru",
+            "260020" to "Kyoto" + SEPARATOR + "Maizuru",
 
             // 大阪府
             "270000" to "Osaka",
 
             // 兵庫県
-            "280010" to "Hyogo - Kobe",
-            "280020" to "Hyogo - Toyooka",
+            "280010" to "Hyogo" + SEPARATOR + "Kobe",
+            "280020" to "Hyogo" + SEPARATOR + "Toyooka",
 
             // 奈良県
             "290010" to "Nara",
-            "290020" to "Nara - Kazeya",
+            "290020" to "Nara" + SEPARATOR + "Kazeya",
 
             // 和歌山県
             "300010" to "Wakayama",
-            "300020" to "Wakayama - Shiono-misaki",
+            "300020" to "Wakayama" + SEPARATOR + "Shiono-misaki",
 
             // 鳥取県
             "310010" to "Tottori",
-            "310020" to "Tottori - Yonago",
+            "310020" to "Tottori" + SEPARATOR + "Yonago",
 
             // 島根県
-            "320010" to "Shimane - Matsue",
-            "320020" to "Shimane - Hamada",
-            "320030" to "Shimane - Saigo",
+            "320010" to "Shimane" + SEPARATOR + "Matsue",
+            "320020" to "Shimane" + SEPARATOR + "Hamada",
+            "320030" to "Shimane" + SEPARATOR + "Saigo",
 
             // 岡山県
             "330010" to "Okayama",
-            "330020" to "Okayama - Tsuyama",
+            "330020" to "Okayama" + SEPARATOR + "Tsuyama",
 
             // 広島県
             "340010" to "Hiroshima",
-            "340020" to "Hiroshima - Syoubara",
+            "340020" to "Hiroshima" + SEPARATOR + "Syoubara",
 
             // 山口県
-            "350010" to "Yamaguchi - Shimonoseki",
+            "350010" to "Yamaguchi" + SEPARATOR + "Shimonoseki",
             "350020" to "Yamaguchi",
-            "350030" to "Yamaguchi - Yanai",
-            "350040" to "Yamaguchi - Hagi",
+            "350030" to "Yamaguchi" + SEPARATOR + "Yanai",
+            "350040" to "Yamaguchi" + SEPARATOR + "Hagi",
 
             // 徳島県
             "360010" to "Tokushima",
-            "360020" to "Tokushima - Hiwasa",
+            "360020" to "Tokushima" + SEPARATOR + "Hiwasa",
 
             // 香川県
-            "370000" to "Kagawa - Takamatsu",
+            "370000" to "Kagawa" + SEPARATOR + "Takamatsu",
 
             // 愛媛県
-            "380010" to "Ehime - Matsuyama",
-            "380020" to "Ehime - Niihama",
-            "380030" to "Ehime - Uwajima",
+            "380010" to "Ehime" + SEPARATOR + "Matsuyama",
+            "380020" to "Ehime" + SEPARATOR + "Niihama",
+            "380030" to "Ehime" + SEPARATOR + "Uwajima",
 
             // 高知県
             "390010" to "Kochi",
-            "390020" to "Kochi - Muroto-misaki",
-            "390030" to "Kochi - Shimizu",
+            "390020" to "Kochi" + SEPARATOR + "Muroto-misaki",
+            "390030" to "Kochi" + SEPARATOR + "Shimizu",
 
             // 福岡県
             "400010" to "Fukuoka",
-            "400020" to "Fukuoka - Yahata",
-            "400030" to "Fukuoka - Iizuka",
-            "400040" to "Fukuoka - Kurume",
+            "400020" to "Fukuoka" + SEPARATOR + "Yahata",
+            "400030" to "Fukuoka" + SEPARATOR + "Iizuka",
+            "400040" to "Fukuoka" + SEPARATOR + "Kurume",
 
             // 佐賀県
             "410010" to "Saga",
-            "410020" to "Saga - Imari",
+            "410020" to "Saga" + SEPARATOR + "Imari",
 
             // 長崎県
             "420010" to "Nagasaki",
-            "420020" to "Nagasaki - Sasebo",
-            "420030" to "Nagasaki - Izuhara",
-            "420040" to "Nagasaki - Fukue",
+            "420020" to "Nagasaki" + SEPARATOR + "Sasebo",
+            "420030" to "Nagasaki" + SEPARATOR + "Izuhara",
+            "420040" to "Nagasaki" + SEPARATOR + "Fukue",
 
             // 熊本県
             "430010" to "Kumamoto",
-            "430020" to "Kumamoto - Aso-OtoHime",
-            "430030" to "Kumamoto - Ushibuka",
-            "430040" to "Kumamoto - Hitoyoshi",
+            "430020" to "Kumamoto" + SEPARATOR + "Aso-OtoHime",
+            "430030" to "Kumamoto" + SEPARATOR + "Ushibuka",
+            "430040" to "Kumamoto" + SEPARATOR + "Hitoyoshi",
 
             // 大分県
             "440010" to "Oita",
-            "440020" to "Oita - Nakatsu",
-            "440030" to "Oita - Hita",
-            "440040" to "Oita - Saiki",
+            "440020" to "Oita" + SEPARATOR + "Nakatsu",
+            "440030" to "Oita" + SEPARATOR + "Hita",
+            "440040" to "Oita" + SEPARATOR + "Saiki",
 
             // 宮城県
             "450010" to "Miyazaki",
-            "450020" to "Miyazaki - Nobeoka",
-            "450030" to "Miyazaki - Miyakonojo",
-            "450040" to "Miyazaki - Takachiho",
+            "450020" to "Miyazaki" + SEPARATOR + "Nobeoka",
+            "450030" to "Miyazaki" + SEPARATOR + "Miyakonojo",
+            "450040" to "Miyazaki" + SEPARATOR + "Takachiho",
 
             // 鹿児島県
             "460010" to "Kagoshima",
-            "460020" to "Kagoshima - Kanoya",
-            "460030" to "Kagoshima - Tanega-shima",
-            "460040" to "Kagoshima - Naze",
+            "460020" to "Kagoshima" + SEPARATOR + "Kanoya",
+            "460030" to "Kagoshima" + SEPARATOR + "Tanega-shima",
+            "460040" to "Kagoshima" + SEPARATOR + "Naze",
 
             // 沖縄県
-            "471010" to "Okinawa - Naha",
-            "471020" to "Okinawa - Nago",
-            "471030" to "Okinawa - Kume-jima",
-            "472000" to "Okinawa - Minamidaito",
-            "473000" to "Okinawa - Miyako-jima",
-            "474010" to "Okinawa - Ishigaki-jima",
-            "474020" to "Okinawa - Yonaguni-jima",
+            "471010" to "Okinawa" + SEPARATOR + "Naha",
+            "471020" to "Okinawa" + SEPARATOR + "Nago",
+            "471030" to "Okinawa" + SEPARATOR + "Kume-jima",
+            "472000" to "Okinawa" + SEPARATOR + "Minamidaito",
+            "473000" to "Okinawa" + SEPARATOR + "Miyako-jima",
+            "474010" to "Okinawa" + SEPARATOR + "Ishigaki-jima",
+            "474020" to "Okinawa" + SEPARATOR + "Yonaguni-jima",
         )
     }
 }

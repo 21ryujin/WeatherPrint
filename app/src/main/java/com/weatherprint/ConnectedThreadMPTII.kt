@@ -56,6 +56,9 @@ class ConnectedThreadMPTII(
             try {
                 Log.i(APP_LOG_TAG, "ConnectedThreadMPTII START")
 
+                // 初回の印刷かを判定
+                var isFirstPrint: Boolean = false
+
                 for (i in 0..2) {
 
                     if (i == 0 && !printData.isToday) {
@@ -86,6 +89,12 @@ class ConnectedThreadMPTII(
 
                     // 強調表示オン（全文強調表示とする）
                     mmOutStream.write(ESC_BOLD_ON)
+
+                    // 初回の印刷出力のみ用紙フィード：３行
+                    if (!isFirstPrint) {
+                        mmOutStream.write(ESC_MULTI_FEED)
+                        isFirstPrint = true
+                    }
 
                     // タイトル：今日／明日／明後日の天気
                     mmOutStream.write(ESC_FONT_SIZE_2)
@@ -334,7 +343,9 @@ class ConnectedThreadMPTII(
                     mmOutStream.write(ESC_FONT_SIZE_1)
                     singleText("WeatherPrint for Thermal printer", false)
                     singleText(">>>> Developed by 21ryujin <<<<", true)
-                    singleLF()
+
+                    // 用紙フィード：３行
+                    mmOutStream.write(ESC_MULTI_FEED)
 
                     // 切り取り線
                     singleText("-------------------------------", true)
