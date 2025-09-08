@@ -28,6 +28,7 @@ data class AppUiState(
     val isTomorrow: Boolean = false,
     val isAfterTomorrow: Boolean = false,
     val isOverview: Boolean = false,
+    val isBold: Boolean = false,
 
     // 地域 初期値
     val expanded: Boolean = false,

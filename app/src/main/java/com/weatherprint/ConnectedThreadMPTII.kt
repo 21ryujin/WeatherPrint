@@ -32,6 +32,8 @@ import com.weatherprint.ConstantParameters.Companion.ESC_JP_DISABLE
 import com.weatherprint.ConstantParameters.Companion.ESC_JP_ENABLE
 import com.weatherprint.ConstantParameters.Companion.ESC_MULTI_FEED
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_MIDDLE
+import com.weatherprint.ConstantParameters.Companion.APP_NAME
+import com.weatherprint.ConstantParameters.Companion.APP_CREDIT
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST_EN
 
 class ConnectedThreadMPTII(
@@ -87,8 +89,10 @@ class ConnectedThreadMPTII(
                     // 全角キャラ設定
                     mmOutStream.write(ESC_JP_CHARSET)
 
-                    // 強調表示オン（全文強調表示とする）
-                    mmOutStream.write(ESC_BOLD_ON)
+                    // 強調表示（UIでONにした場合は全文強調表示とする）
+                    if (printData.isBold) {
+                        mmOutStream.write(ESC_BOLD_ON)
+                    }
 
                     // 初回の印刷出力のみ用紙フィード：３行
                     if (!isFirstPrint) {
@@ -341,8 +345,8 @@ class ConnectedThreadMPTII(
                     singleLF()
                     mmOutStream.write(ESC_ALIGN_CENTER)
                     mmOutStream.write(ESC_FONT_SIZE_1)
-                    singleText("WeatherPrint for Thermal printer", false)
-                    singleText(">>>> Developed by 21ryujin <<<<", true)
+                    singleText(APP_NAME, true)
+                    singleText(APP_CREDIT, true)
 
                     // 用紙フィード：３行
                     mmOutStream.write(ESC_MULTI_FEED)

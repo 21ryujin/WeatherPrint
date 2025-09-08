@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------
- * 天気予報印刷 for SUNMI V series ( and MPT-II )
+ * 天気予報印刷 for Thermal Printer
  * Developed by 21ryujin
  * ------------------------------------------------------------
 */
@@ -66,8 +66,10 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import com.weatherprint.ui.theme.WeatherPrintTheme
 import com.weatherprint.ConstantParameters.Companion.APP_LOG_TAG
 import com.weatherprint.ConstantParameters.Companion.APP_VERSION
+import com.weatherprint.ConstantParameters.Companion.DB_KEY_ID
 import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST
+import com.weatherprint.ConstantParameters.Companion.SM_L200_PRINTER
 import com.weatherprint.ConstantParameters.Companion.V2_PRO_PRINTER
 import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
@@ -122,6 +124,8 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
     val isAfterTomorrow = remember { mutableStateOf(AppUiState().isAfterTomorrow) }
     // 天気概況スイッチ
     val isOverview = remember { mutableStateOf(AppUiState().isOverview) }
+    // 強調印刷スイッチ
+    val isBold = remember { mutableStateOf(AppUiState().isBold) }
 
     // 地域選択プルダウン
     val expanded = remember { mutableStateOf(AppUiState().expanded) }
@@ -137,14 +141,14 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
         // UIの状態をDataBaseから取得
         runBlocking {
             // Select count(*) してデータがあるかを確認
-            val count = selectCount(context, 0)
+            val count = selectCount(context, DB_KEY_ID)
 
             // データがあればSelectしてUI状態を復元、データがなければデフォルト値でInsert
             if (count > 0) {
                 Log.i(APP_LOG_TAG, "Select UiState Database")
 
                 // 保存データをSelect
-                val getUiState: UiState? = selectIdUiState(context, 0)
+                val getUiState: UiState? = selectIdUiState(context, DB_KEY_ID)
 
                 // 今日の天気 スイッチの保存値を反映
                 if (getUiState?.isToday != null) {
@@ -182,6 +186,15 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                     }
                 }
 
+                // 強調印刷 スイッチの保存値を反映
+                if (getUiState?.isBold != null) {
+                    if (getUiState.isBold) {
+                        isBold.value = true
+                    } else {
+                        isBold.value = false
+                    }
+                }
+
                 // 地域設定 プルダウンの保存値（Key）を反映
                 if (getUiState?.narrowAreaKey != null) {
                     narrowAreaKey.value = getUiState.narrowAreaKey.toString()
@@ -200,11 +213,12 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                 // AppUiStateのデフォルト値でデータをInsert
                 insertUiState(
                     context,
-                    0,
+                    DB_KEY_ID,
                     AppUiState().isToday,
                     AppUiState().isTomorrow,
                     AppUiState().isAfterTomorrow,
                     AppUiState().isOverview,
+                    AppUiState().isBold,
                     AppUiState().narrowAreaKey,
                     AppUiState().narrowAreaValue
                 )
@@ -321,6 +335,14 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
             onCheckChanged = { isOverview.value = it }
         )
         Spacer(
+            Modifier.size(5.dp)
+        )
+        // 強調印刷
+        BoldPrint (
+            checked = isBold.value,
+            onCheckChanged = { isBold.value = it }
+        )
+        Spacer(
             Modifier.size(30.dp)
         )
         Box(
@@ -410,6 +432,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                         isTomorrow.value,
                         isAfterTomorrow.value,
                         isOverview.value,
+                        isBold.value,
                         narrowAreaKey.value,
                         narrowAreaValue.value
                         ),
@@ -511,16 +534,17 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                             return@TextButton
                         }
 
-                        // UIの状態を保存（Databese Update）
+                        // UIの状態を保存（Database Update）
                         runBlocking {
-                            Log.i(APP_LOG_TAG, "Updaste UiState Databese")
+                            Log.i(APP_LOG_TAG, "Update UiState Database")
                             updateUiState(
                                 context,
-                                0,
+                                DB_KEY_ID,
                                 isToday.value,
                                 isTomorrow.value,
                                 isAfterTomorrow.value,
                                 isOverview.value,
+                                isBold.value,
                                 narrowAreaKey.value,
                                 narrowAreaValue.value
                             )
@@ -535,6 +559,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                         weatherData?.isTomorrow = isTomorrow.value
                         weatherData?.isAfterTomorrow = isAfterTomorrow.value
                         weatherData?.isOverview = isOverview.value
+                        weatherData?.isBold = isBold.value
                         weatherData?.narrowArea = narrowAreaKey.value
 
                         // 天気予報取得に失敗した場合
@@ -552,7 +577,9 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                             val deviceHardwareAddress = device.address // MAC address
                             Log.i(APP_LOG_TAG, "検知デバイス：$deviceName -> $deviceHardwareAddress")
 
-                            if (deviceName == V2_PRO_PRINTER || deviceName == MPT_II_PRINTER) {
+                            if (deviceName == V2_PRO_PRINTER ||
+                                deviceName == MPT_II_PRINTER ||
+                                deviceName.startsWith(SM_L200_PRINTER)) {
                                 // 内蔵プリンタを検知した場合
                                 findDevice = true
                                 Log.i(APP_LOG_TAG, "接続デバイス：$deviceName -> $deviceHardwareAddress")
@@ -565,6 +592,7 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                                 try {
                                     val connectThread = ConnectThread(device, weatherData, deviceName)
                                     connectThread.start()
+                                    return@TextButton
                                 } catch(e: Exception) {
                                     Log.e(APP_LOG_TAG, e.toString())
                                     dialogTitle.value = "プリンタエラー"
@@ -751,6 +779,30 @@ fun WeatherOverview (checked: Boolean, onCheckChanged: (Boolean) -> Unit) {
     }
 }
 
+/**
+ * UI：【スイッチ】強調印刷
+ */
+@Composable
+fun BoldPrint (checked: Boolean, onCheckChanged: (Boolean) -> Unit) {
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End
+    ) {
+        Text(
+            modifier = Modifier.weight(1f),
+            text = "文字の強調印刷",
+            fontSize = 19.sp
+        )
+        Switch(
+            checked = checked,
+            onCheckedChange = {
+                onCheckChanged(it)
+            },
+        )
+    }
+}
+
 
 @Preview(
     showBackground = true,
@@ -760,9 +812,10 @@ fun WeatherOverview (checked: Boolean, onCheckChanged: (Boolean) -> Unit) {
 @Composable
 fun WeatherPrintPreview() {
     WeatherPrintTheme {
-        WeatherPrint("build 20250619_1")
+        WeatherPrint(APP_VERSION)
     }
 }
+
 
 /**
  * UI：実行確認ダイアログ テキスト組み立て
@@ -772,6 +825,7 @@ fun dialogText(
     isTomorrow: Boolean,
     isAfterTomorrow: Boolean,
     isOverview: Boolean,
+    isBold: Boolean,
     narrowAreaKey: String,
     narrowAreaValue: String
 ): String {
@@ -779,6 +833,7 @@ fun dialogText(
     var textTomorrow: String
     var textAfterTomorrow: String
     var textOverview: String
+    var textBold: String
 
     if (isToday) {
         textToday = "✔ 印刷する"
@@ -804,6 +859,12 @@ fun dialogText(
         textOverview = "✖ 印刷しない"
     }
 
+    if (isBold) {
+        textBold = "✔ 文字を強調印刷"
+    } else {
+        textBold = "✖ 通常の文字印刷"
+    }
+
     val buildText: String =
         "【対象日】\n" +
         "　今日の天気　：$textToday\n" +
@@ -812,6 +873,9 @@ fun dialogText(
         "\n" +
         "【天気概況】\n" +
         "　$textOverview\n" +
+        "\n" +
+        "【強調印刷】\n" +
+        "　$textBold\n" +
         "\n" +
         "【対象地域】\n" +
         "　$narrowAreaKey $narrowAreaValue"

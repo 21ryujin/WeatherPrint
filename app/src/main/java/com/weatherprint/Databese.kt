@@ -26,6 +26,7 @@ data class UiState(
     val isTomorrow: Boolean,        // 明日の天気 スイッチ
     val isAfterTomorrow: Boolean,   // 明後日の天気 スイッチ
     val isOverview: Boolean,        // 天気概要 スイッチ
+    val isBold: Boolean,            // 強調印刷 スイッチ
     val narrowAreaKey: String,      // 地域設定プルダウン（Key）
     val narrowAreaValue: String,    // 地域設定プルダウン（Value）
 )
@@ -121,6 +122,7 @@ suspend fun insertUiState(
     isTomorrow: Boolean,
     isAfterTomorrow: Boolean,
     isOverview: Boolean,
+    isBold: Boolean,
     narrowAreaKey: String,
     narrowAreaValue: String
 ) {
@@ -135,6 +137,7 @@ suspend fun insertUiState(
         isTomorrow,
         isAfterTomorrow,
         isOverview,
+        isBold,
         narrowAreaKey,
         narrowAreaValue
     )
@@ -154,6 +157,7 @@ suspend fun updateUiState(
     isTomorrow: Boolean,
     isAfterTomorrow: Boolean,
     isOverview: Boolean,
+    isBold: Boolean,
     narrowAreaKey: String,
     narrowAreaValue: String
 ) {
@@ -168,6 +172,7 @@ suspend fun updateUiState(
         isTomorrow,
         isAfterTomorrow,
         isOverview,
+        isBold,
         narrowAreaKey,
         narrowAreaValue
     )

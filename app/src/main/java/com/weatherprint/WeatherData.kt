@@ -35,6 +35,8 @@ data class WeatherData(
     var isAfterTomorrow: Boolean,
     /** 天気概況の印刷判定 */
     var isOverview: Boolean,
+    /** 強調表示の印刷判定 */
+    var isBold: Boolean,
     /** 地域コードの印刷判定 */
     var narrowArea: String,
 )

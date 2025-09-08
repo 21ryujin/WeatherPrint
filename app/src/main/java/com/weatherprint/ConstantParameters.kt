@@ -8,8 +8,18 @@ package com.weatherprint
 class ConstantParameters {
 
     companion object {
+        // -------------------------
+        // 一般的な定数
+        // -------------------------
+
         // アプリバージョン
-        const val APP_VERSION: String = "1.0.1"
+        const val APP_VERSION: String = "1.1.0"
+
+        // アプリ名称
+        const val APP_NAME = "WeatherPrint for Thermal Printer"
+        const val APP_NAME_JP1 = "天気予報印刷"
+        const val APP_NAME_JP2 = " for Thermal Printer"
+        const val APP_CREDIT = ">>>> Developed by 21ryujin <<<<"
 
         // ログ出力関連
         const val APP_LOG_TAG: String = "WeatherPrintLog"
@@ -20,14 +30,21 @@ class ConstantParameters {
         // Bluetooth関連
         const val SPP_UUID: String = "00001101-0000-1000-8000-00805F9B34FB"
 
+        // Database Key ID
+        const val DB_KEY_ID: Int = 0
+
         // プリンター関連
-        const val V2_PRO_PRINTER: String = "InnerPrinter"
-        const val MPT_II_PRINTER: String = "MPT-II"
+        const val V2_PRO_PRINTER: String  = "InnerPrinter"
+        const val MPT_II_PRINTER: String  = "MPT-II"
+        const val SM_L200_PRINTER: String = "STAR L200"
 
         // 印刷ウェイト
         const val ESC_WAIT_LONG: Long = 20
         const val ESC_WAIT_MIDDLE: Long = 10
         const val ESC_WAIT_SHORT: Long = 5
+
+        // 一般的な定数：ここまで --------------------------------------------------
+
 
         // -------------------------
         // ESC/POS コマンド関連
@@ -58,8 +75,8 @@ class ConstantParameters {
         val ESC_WB_REVERS_OFF = byteArrayOf(0x1D.toByte(), 0x42.toByte(), 0x00.toByte())
 
         // 強調表示　"ESC E n"
-        val ESC_BOLD_ON  = byteArrayOf(0x1D.toByte(), 0x42.toByte(), 0x01.toByte())
-        val ESC_BOLD_OFF = byteArrayOf(0x1D.toByte(), 0x42.toByte(), 0x00.toByte())
+        val ESC_BOLD_ON  = byteArrayOf(0x1B.toByte(), 0x45.toByte(), 0x01.toByte())
+        val ESC_BOLD_OFF = byteArrayOf(0x1B.toByte(), 0x45.toByte(), 0x00.toByte())
 
         // 表示位置 "ESC a n"
         val ESC_ALIGN_LEFT   = byteArrayOf(0x1B.toByte(), 0x61.toByte(), 0x00.toByte())
@@ -73,15 +90,87 @@ class ConstantParameters {
         // 複数行改行 "ESC d n"
         val ESC_MULTI_FEED = byteArrayOf(0x1B.toByte(), 0x64.toByte(), 0x03.toByte())
 
-        // 画像表示 "GS v 0 NUL wL wH hL hH 画像のバイト列"
+        // 画像表示 "GS v 0 m wL wH hL hH 画像のバイト列"
         // 画像の横幅wと高さhを表す「wL wH hL hH」の横幅wの指定は８で割る必要あり
-        // シンボル出力　横幅：384px　縦：2ライン
+        // mはモード指定、「0」はノーマルモードで、横203 DPI、縦203 DPI
+        // シンボル出力　横幅：384px　縦：2px
+        // プログラム側で、天気シンボルの縦幅分を繰り返しこのコマンドで出力する
+        // 縦を2pxで指定するのは、同じイメージを2度書き出して縦を2倍にするため
         val ESC_SYMBOL_PRINT = byteArrayOf(
             0x1D.toByte(), 0x76.toByte(), 0x30.toByte(), 0x00.toByte(),
             48.toByte(), 0x00.toByte(),
             2.toByte(), 0x00.toByte()
         )
 
+        // ESC/POS コマンド関連：ここまで --------------------------------------------------
+
+
+        // -------------------------
+        // SM-L200 STAR Line Mode コマンド関連
+        // -------------------------
+
+        // シフトJIS 漢字モード設定／解除 "ESC $ n"
+        val ESC_SML200_SJIS_MODE = byteArrayOf(0x1B.toByte(), 0x43.toByte(), 0x01.toByte())
+
+        // 縦・横拡大印字の設定・解除 "ESC i Hn Wn"
+        // 縦１倍・横１倍
+        val ESC_SML200_SIZE_H0_W0  = byteArrayOf(0x1B.toByte(), 0x69.toByte(), 0x00.toByte(), 0x00.toByte())
+        // 縦２倍・横１倍
+        val ESC_SML200_SIZE_H1_W0  = byteArrayOf(0x1B.toByte(), 0x69.toByte(), 0x01.toByte(), 0x00.toByte())
+        // 縦１倍・横２倍
+        val ESC_SML200_SIZE_H0_W1  = byteArrayOf(0x1B.toByte(), 0x69.toByte(), 0x00.toByte(), 0x01.toByte())
+        // 縦２倍・横２倍
+        val ESC_SML200_SIZE_H1_W1  = byteArrayOf(0x1B.toByte(), 0x69.toByte(), 0x01.toByte(), 0x01.toByte())
+
+        // 横拡大印字の設定・解除 "ESC W n"
+        val ESC_SML200_SIZE_WIDE_0 = byteArrayOf(0x1B.toByte(), 0x57.toByte(), 0x00.toByte())
+        val ESC_SML200_SIZE_WIDE_1 = byteArrayOf(0x1B.toByte(), 0x57.toByte(), 0x01.toByte())
+
+        // 縦拡大印字の設定・解除 "ESC h n"
+        val ESC_SML200_SIZE_HIGH_0 = byteArrayOf(0x1B.toByte(), 0x68.toByte(), 0x01.toByte())
+        val ESC_SML200_SIZE_HIGH_1 = byteArrayOf(0x1B.toByte(), 0x68.toByte(), 0x00.toByte())
+
+        // 強調印字の選択 "ESC E"
+        val ESC_SML200_BOLD_ON  = byteArrayOf(0x1B.toByte(), 0x45.toByte())
+        // 強調印字の解除 "ESC F"
+        val ESC_SML200_BOLD_OFF = byteArrayOf(0x1B.toByte(), 0x46.toByte())
+
+        // アンダーラインモードの選択／解除 "ESC - n"
+        val ESC_SML200_UNDER_LINE_ON  = byteArrayOf(0x1B.toByte(), 0x2D.toByte(), 0x01.toByte())
+        val ESC_SML200_UNDER_LINE_OFF = byteArrayOf(0x1B.toByte(), 0x2D.toByte(), 0x00.toByte())
+
+        // アッパーラインモードの選択／解除 "ESC _ n"
+        val ESC_SML200_UPPER_LINE_ON  = byteArrayOf(0x1B.toByte(), 0x5F.toByte(), 0x01.toByte())
+        val ESC_SML200_UPPER_LINE_OFF = byteArrayOf(0x1B.toByte(), 0x5F.toByte(), 0x00.toByte())
+
+        // 白黒反転印字の選択 "ESC 4"
+        val ESC_SML200_REVERSE_ON  = byteArrayOf(0x1B.toByte(), 0x34.toByte())
+        // 白黒反転印字の解除 "ESC 5"
+        val ESC_SML200_REVERSE_OFF = byteArrayOf(0x1B.toByte(), 0x35.toByte())
+
+        // 位置揃えの指定 "ESC GS a n"
+        val ESC_SML200_ALIGN_LEFT   = byteArrayOf(0x1B.toByte(), 0x1D.toByte(), 0x61.toByte(), 0x00.toByte())
+        val ESC_SML200_ALIGN_CENTER = byteArrayOf(0x1B.toByte(), 0x1D.toByte(), 0x61.toByte(), 0x01.toByte())
+        val ESC_SML200_ALIGN_RIGHT  = byteArrayOf(0x1B.toByte(), 0x1D.toByte(), 0x61.toByte(), 0x02.toByte())
+
+        // ｎ行紙送り "ESC a n"
+        val ESC_SML200_MULTI_FEED = byteArrayOf(0x1B.toByte(), 0x61.toByte(), 0x01.toByte())
+
+        // n/4mm紙送り "ESC J n"（n=4 を指定し1mmの紙送りとする）
+        val ESC_SML200_4MM_FEED = byteArrayOf(0x1B.toByte(), 0x4A.toByte(), 0x04.toByte())
+
+        // 画像表示の定義 "ESC X n1 n2 画像のバイト列"
+        // 縦24dot x 横150dot （3シンボル分）の天気シンボルを出力する
+        val ESC_SML200_SYMBOL_PRINT = byteArrayOf(
+            0x1B.toByte(), 0x58.toByte(), 0x96.toByte(), 0x00.toByte()
+        )
+
+        // SM-L200 STAR Line Mode コマンド関連：ここまで --------------------------------------------------
+
+
+        // -------------------------
+        // 地域設定のリスト値
+        // -------------------------
         const val SEPARATOR: String = " - "
 
         // 地域 リスト値
@@ -373,8 +462,11 @@ class ConstantParameters {
             "474020" to SEPARATOR + "与那国島",
         )
 
+        // 地域設定のリスト値：ここまで --------------------------------------------------
 
-        // 地域 リスト値（英文）
+        // -------------------------
+        // 地域表示の英文変換用
+        // -------------------------
         val NARROW_AREA_LIST_EN: Map<String, String> = mapOf(
             // 北海道
             "011000" to "Hokkaido" + SEPARATOR + "Wakkanai",
@@ -615,5 +707,7 @@ class ConstantParameters {
             "474010" to "Okinawa" + SEPARATOR + "Ishigaki-jima",
             "474020" to "Okinawa" + SEPARATOR + "Yonaguni-jima",
         )
+
+        // 地域表示の英文変換：ここまで --------------------------------------------------
     }
 }
