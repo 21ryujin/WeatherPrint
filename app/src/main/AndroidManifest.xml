@@ -24,16 +24,17 @@
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:label="天気予報印刷 for SUNMI V series"
+        android:label="天気予報印刷 for Thermal Printer"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherPrint"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:exported="true"

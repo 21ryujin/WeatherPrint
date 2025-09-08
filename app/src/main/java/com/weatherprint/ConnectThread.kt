@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.weatherprint.ConstantParameters.Companion.SM_L200_PRINTER
 import java.io.IOException
 import java.util.UUID
 import com.weatherprint.ConstantParameters.Companion.SPP_UUID
@@ -37,6 +38,8 @@ class ConnectThread(device: BluetoothDevice, weatherData: WeatherData, deviceNam
         // the connection in a separate thread.
         if (strPrinter == V2_PRO_PRINTER) {
             manageMyConnectedSocket(socket, printData)
+        } else if (strPrinter.startsWith(SM_L200_PRINTER)) {
+            manageMyConnectedSocketSML200(socket, printData)
         } else {
             manageMyConnectedSocketMPTII(socket, printData)
         }
@@ -65,4 +68,11 @@ fun manageMyConnectedSocketMPTII(socket: BluetoothSocket, printData: WeatherData
     val ConnectedThreadMPTII = ConnectedThreadMPTII(socket, printData)
     ConnectedThreadMPTII.start()
     ConnectedThreadMPTII.join()
+}
+
+// SM-L200 向け印刷実行
+fun manageMyConnectedSocketSML200(socket: BluetoothSocket, printData: WeatherData) {
+    val ConnectedThreadSML200 = ConnectedThreadSML200(socket, printData)
+    ConnectedThreadSML200.start()
+    ConnectedThreadSML200.join()
 }

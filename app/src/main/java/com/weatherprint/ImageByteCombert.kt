@@ -124,10 +124,11 @@ fun makeSymbol(telop: String) : MakeSymbolData {
 
 
 /**
- *  天気シンボルデータから倍t列を生成
+ *  天気シンボルデータからバイト列を生成
  */
 fun symbolByteArray(firstLetter: String?, secondLetter: String?, thirdLetter: String?): ByteArray {
 
+    // バイト列作成用ストリーム
     val outByteArray = ByteArrayOutputStream()
 
     // シンボル：1st letter

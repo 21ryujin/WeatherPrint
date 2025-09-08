@@ -9,8 +9,6 @@ android {
     namespace = "com.weatherprint"
     compileSdk = 36
 
-    buildFeatures.aidl = true
-
     kotlin {
         jvmToolchain(21)
     }
@@ -20,7 +18,7 @@ android {
         minSdk = 23
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0.1"
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,6 +26,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
