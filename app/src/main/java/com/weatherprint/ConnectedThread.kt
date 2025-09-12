@@ -35,6 +35,8 @@ import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_MIDDLE
 import com.weatherprint.ConstantParameters.Companion.APP_NAME_JP1
 import com.weatherprint.ConstantParameters.Companion.APP_NAME_JP2
 import com.weatherprint.ConstantParameters.Companion.APP_CREDIT
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_1SEC
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_3SEC
 
 class ConnectedThread(
     private val mmSocket: BluetoothSocket, weatherData: WeatherData) : Thread() {
@@ -261,7 +263,7 @@ class ConnectedThread(
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
-                    sleep(ESC_WAIT_SHORT)
+                    sleep(ESC_WAIT_1SEC)
 
                     // 天気概況
                     if (printData.isOverview && !isOverviewPrinted) {
@@ -273,13 +275,13 @@ class ConnectedThread(
                         multiText(printData.description.text,true)
                         singleLF()
 
+                        // バッファ放出＆スリープ（処理落ち防止）
+                        mmOutStream.flush()
+                        sleep(ESC_WAIT_SHORT)
+
                         // 次に天気概況を印刷しないようにするフラグ
                         isOverviewPrinted = true
                     }
-
-                    // バッファ放出＆スリープ（処理落ち防止）
-                    mmOutStream.flush()
-                    sleep(ESC_WAIT_SHORT)
 
                     // クレジット
                     singleLF()
@@ -300,7 +302,7 @@ class ConnectedThread(
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
-                    sleep(ESC_WAIT_SHORT)
+                    sleep(ESC_WAIT_1SEC)
                 }
 
                 // 印刷終了

@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------
- * サーマルプリンターへの印刷実行（スター精密 SM-L200 向け）
+ * サーマルプリンターへの印刷実行（MP-B20 向け）
  * ------------------------------------------------------------
  */
 package com.weatherprint
@@ -11,32 +11,34 @@ import android.util.Log
 import java.io.IOException
 import java.io.OutputStream
 import com.weatherprint.ConstantParameters.Companion.APP_LOG_TAG
+import com.weatherprint.ConstantParameters.Companion.ESC_ALIGN_CENTER
+import com.weatherprint.ConstantParameters.Companion.ESC_BOLD_ON
+import com.weatherprint.ConstantParameters.Companion.ESC_FONT_SIZE_1
+import com.weatherprint.ConstantParameters.Companion.ESC_FONT_SIZE_2
 import com.weatherprint.ConstantParameters.Companion.ESC_INITIALISE
+import com.weatherprint.ConstantParameters.Companion.ESC_SYMBOL_PRINT
+import com.weatherprint.ConstantParameters.Companion.ESC_UNDER_LINE_OFF
+import com.weatherprint.ConstantParameters.Companion.ESC_UNDER_LINE_ON
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_LONG
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_SHORT
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_ALIGN_CENTER
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_ALIGN_LEFT
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_BOLD_ON
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_MULTI_FEED
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_REVERSE_OFF
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_REVERSE_ON
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SIZE_H0_W0
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SIZE_H0_W1
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SIZE_H1_W0
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SIZE_H1_W1
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SJIS_MODE
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_SYMBOL_PRINT
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_UNDER_LINE_OFF
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_UNDER_LINE_ON
+import com.weatherprint.ConstantParameters.Companion.ESC_WB_REVERS_OFF
+import com.weatherprint.ConstantParameters.Companion.ESC_WB_REVERS_ON
+import com.weatherprint.ConstantParameters.Companion.ESC_ALIGN_LEFT
+import com.weatherprint.ConstantParameters.Companion.ESC_FONT_SIZE_2_H
+import com.weatherprint.ConstantParameters.Companion.ESC_FONT_SIZE_2_W
+import com.weatherprint.ConstantParameters.Companion.ESC_MULTI_FEED
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_MIDDLE
-import com.weatherprint.ConstantParameters.Companion.APP_NAME
+import com.weatherprint.ConstantParameters.Companion.APP_NAME_JP1
+import com.weatherprint.ConstantParameters.Companion.APP_NAME_JP2
 import com.weatherprint.ConstantParameters.Companion.APP_CREDIT
-import com.weatherprint.ConstantParameters.Companion.ESC_SML200_4MM_FEED
+import com.weatherprint.ConstantParameters.Companion.ESC_FINE_FEED_N07
+import com.weatherprint.ConstantParameters.Companion.ESC_FINE_FEED_N15
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_1SEC
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_3SEC
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_5SEC
 import java.nio.charset.Charset
 
-class ConnectedThreadSML200(
+class ConnectedThreadMPB20(
     private val mmSocket: BluetoothSocket, weatherData: WeatherData) : Thread() {
 
         // 天気予報APIから取得したデータの格納
@@ -56,7 +58,7 @@ class ConnectedThreadSML200(
         override fun run() {
 
             try {
-                Log.i(APP_LOG_TAG, "ConnectedThreadSML200 START")
+                Log.i(APP_LOG_TAG, "ConnectedThreadMPB20 START")
 
                 // 天気概況を印刷済みかを判定
                 var isOverviewPrinted: Boolean = false
@@ -82,12 +84,9 @@ class ConnectedThreadSML200(
                     // プリンタ初期化
                     mmOutStream.write(ESC_INITIALISE)
 
-                    // シフトJIS 漢字モード設定
-                    mmOutStream.write(ESC_SML200_SJIS_MODE)
-
                     // 強調表示（UIでONにした場合は全文強調表示とする）
                     if (printData.isBold) {
-                        mmOutStream.write(ESC_SML200_BOLD_ON)
+                        mmOutStream.write(ESC_BOLD_ON)
                     }
 
                     // バッファ放出＆スリープ（処理落ち防止）
@@ -96,78 +95,79 @@ class ConnectedThreadSML200(
 
                     // 初回の印刷出力のみ用紙フィード：３行
                     if (!isFirstPrint) {
-                        mmOutStream.write(ESC_SML200_MULTI_FEED)
+                        mmOutStream.write(ESC_MULTI_FEED)
                         isFirstPrint = true
                     }
 
                     // タイトル：今日／明日／明後日の天気
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W1)
-                    mmOutStream.write(ESC_SML200_REVERSE_ON)
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2)
+                    mmOutStream.write(ESC_WB_REVERS_ON)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
                     if (printData.forecasts[i].dateLabel == "明後日") {
-                        multiText(printData.forecasts[i].dateLabel, false)
-                        singleText(" ", false)
-                        multiText("の天気", true)
+                        multiText("　" + printData.forecasts[i].dateLabel + "の天気　", true)
                     } else {
-                        singleText("  ", false)
+                        singleText("   ", false)
                         multiText(printData.forecasts[i].dateLabel + "の天気", false)
-                        singleText("  ", true)
+                        singleText("   ", true)
                     }
-                    mmOutStream.write(ESC_SML200_REVERSE_OFF)
+                    mmOutStream.write(ESC_WB_REVERS_OFF)
+                    mmOutStream.write(ESC_FINE_FEED_N15)
 
                     // 発表日時と管区気象台
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
                     singleText(printData.publicTimeFormatted + " ", false)
                     multiText("時点", true)
                     multiText(printData.publishingOffice + "発表", true)
                     singleLF()
 
                     // 地域指定
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_UNDER_LINE_ON)
+                    mmOutStream.write(ESC_FONT_SIZE_2_H)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
                     multiText(printData.title, true)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FINE_FEED_N07)
+
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("エリアコード：", false)
+                    mmOutStream.write(ESC_UNDER_LINE_ON)
                     singleText(printData.narrowArea, true)
-                    mmOutStream.write(ESC_SML200_UNDER_LINE_OFF)
-                    singleLF()
+                    mmOutStream.write(ESC_UNDER_LINE_OFF)
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
                     sleep(ESC_WAIT_SHORT)
+
+                    // 天気シンボル
+                    val makeSymbolPrint: MakeSymbolData = makeSymbol(printData.forecasts[i].telop)
+
+                    for (j in 0..59) {
+                        mmOutStream.write(ESC_SYMBOL_PRINT +
+                            symbolByteArray(
+                                makeSymbolPrint.firstLetter[j],
+                                makeSymbolPrint.secondLetter[j],
+                                makeSymbolPrint.thirdLetter[j]
+                            )
+                        )
+                        // バッファ放出＆スリープ（処理落ち防止）
+                        mmOutStream.flush()
+                        sleep(ESC_WAIT_SHORT)
+                    }
 
                     // 天気テキスト
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W1)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2)
                     multiText(printData.forecasts[i].telop, true)
-                    mmOutStream.write(ESC_SML200_4MM_FEED)
-
-                    // 天気シンボル生成
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    val makeSymbolPrint: MakeSymbolData = makeSymbolSML200(printData.forecasts[i].telop)
-
-                    // バイト列作成とデータ出力
-                    mmOutStream.write(
-                        ESC_SML200_SYMBOL_PRINT + symbolByteArraySML200(makeSymbolPrint)
-                    )
                     singleLF()
-                    singleLF()
-
-                    // バッファ放出＆スリープ（処理落ち防止）
-                    mmOutStream.flush()
-                    sleep(ESC_WAIT_SHORT)
 
                     // 気温
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                    multiText("＝＝＝＝＝＝気温＝＝＝＝＝＝", true)
-                    mmOutStream.write(ESC_SML200_4MM_FEED)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2_H)
+                    multiText("＝＝＝＝＝＝＝気温＝＝＝＝＝＝＝", true)
+                    mmOutStream.write(ESC_FINE_FEED_N15)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("最低気温：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if(printData.forecasts[i].temperature.min.celsius == null) {
                         singleText("--", false)
                     } else {
@@ -178,9 +178,9 @@ class ConnectedThreadSML200(
                     }
                     multiText("℃", true)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("最高気温：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if(printData.forecasts[i].temperature.max.celsius == null) {
                         singleText("--", false)
                     } else {
@@ -197,38 +197,38 @@ class ConnectedThreadSML200(
                     sleep(ESC_WAIT_SHORT)
 
                     // 降水確率
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                    multiText("＝＝＝＝＝降水確率＝＝＝＝＝", true)
-                    mmOutStream.write(ESC_SML200_4MM_FEED)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2_H)
+                    multiText("＝＝＝＝＝＝降水確率＝＝＝＝＝＝", true)
+                    mmOutStream.write(ESC_FINE_FEED_N15)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("００時～０６時：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if (printData.forecasts[i].chanceOfRain.T00_06 == "0%") {
                         singleText(" ", false)
                     }
                     singleText(printData.forecasts[i].chanceOfRain.T00_06, true)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("０６時～１２時：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if (printData.forecasts[i].chanceOfRain.T06_12 == "0%") {
                         singleText(" ", false)
                     }
                     singleText(printData.forecasts[i].chanceOfRain.T06_12, true)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("１２時～１８時：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if (printData.forecasts[i].chanceOfRain.T12_18 == "0%") {
                         singleText(" ", false)
                     }
                     singleText(printData.forecasts[i].chanceOfRain.T12_18, true)
 
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText("１８時～２４時：", false)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W1)
+                    mmOutStream.write(ESC_FONT_SIZE_2_W)
                     if (printData.forecasts[i].chanceOfRain.T18_24 == "0%") {
                         singleText(" ", false)
                     }
@@ -240,20 +240,20 @@ class ConnectedThreadSML200(
                     sleep(ESC_WAIT_SHORT)
 
                     // 風向き
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                    multiText("＝＝＝＝＝風の状況＝＝＝＝＝", true)
-                    mmOutStream.write(ESC_SML200_4MM_FEED)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2_H)
+                    multiText("＝＝＝＝＝＝風の状況＝＝＝＝＝＝", true)
+                    mmOutStream.write(ESC_FINE_FEED_N15)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     multiText(printData.forecasts[i].detail.wind, true)
                     singleLF()
 
                     // 波の高さ
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                    multiText("＝＝＝＝＝波の高さ＝＝＝＝＝", true)
-                    mmOutStream.write(ESC_SML200_4MM_FEED)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_2_H)
+                    multiText("＝＝＝＝＝＝波の高さ＝＝＝＝＝＝", true)
+                    mmOutStream.write(ESC_FINE_FEED_N15)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
                     if (printData.forecasts[i].detail.wave == null) {
                         multiText("（情報なし）", true)
                     } else {
@@ -267,12 +267,12 @@ class ConnectedThreadSML200(
 
                     // 天気概況
                     if (printData.isOverview && !isOverviewPrinted) {
-                        mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                        mmOutStream.write(ESC_SML200_SIZE_H1_W0)
-                        multiText("＝＝＝＝＝天気概況＝＝＝＝＝", true)
-                        mmOutStream.write(ESC_SML200_4MM_FEED)
-                        mmOutStream.write(ESC_SML200_ALIGN_LEFT)
-                        mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                        mmOutStream.write(ESC_ALIGN_CENTER)
+                        mmOutStream.write(ESC_FONT_SIZE_2_H)
+                        multiText("＝＝＝＝＝＝天気概況＝＝＝＝＝＝", true)
+                        mmOutStream.write(ESC_FINE_FEED_N15)
+                        mmOutStream.write(ESC_ALIGN_LEFT)
+                        mmOutStream.write(ESC_FONT_SIZE_1)
                         multiText(printData.description.text,true)
                         singleLF()
 
@@ -286,19 +286,20 @@ class ConnectedThreadSML200(
 
                     // クレジット
                     singleLF()
-                    mmOutStream.write(ESC_SML200_ALIGN_CENTER)
-                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
-                    singleText(APP_NAME, false)
+                    mmOutStream.write(ESC_ALIGN_CENTER)
+                    mmOutStream.write(ESC_FONT_SIZE_1)
+                    multiText(APP_NAME_JP1, false)
+                    singleText(APP_NAME_JP2, true)
                     singleText(APP_CREDIT, true)
 
                     // 用紙フィード：３行
-                    mmOutStream.write(ESC_SML200_MULTI_FEED)
+                    mmOutStream.write(ESC_MULTI_FEED)
 
                     // 切り取り線
-                    singleText("-------------------------------", true)
+                    multiText("－－－－－－－－－－－－－－－－", true)
 
                     // 用紙フィード：３行
-                    mmOutStream.write(ESC_SML200_MULTI_FEED)
+                    mmOutStream.write(ESC_MULTI_FEED)
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
@@ -312,7 +313,7 @@ class ConnectedThreadSML200(
                 }
 
                 // 印刷終了
-                Log.i(APP_LOG_TAG, "ConnectedThreadSML200 END")
+                Log.i(APP_LOG_TAG, "ConnectedThreadMPB20 END")
 
             } catch (e: IOException) {
                 Log.i(TAG, "Input stream was disconnected", e)
