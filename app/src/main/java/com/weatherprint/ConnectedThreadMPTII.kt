@@ -34,6 +34,9 @@ import com.weatherprint.ConstantParameters.Companion.ESC_MULTI_FEED
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_MIDDLE
 import com.weatherprint.ConstantParameters.Companion.APP_NAME
 import com.weatherprint.ConstantParameters.Companion.APP_CREDIT
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_2SEC
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_3SEC
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_5SEC
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST_EN
 
 class ConnectedThreadMPTII(
@@ -359,7 +362,7 @@ class ConnectedThreadMPTII(
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
-                    sleep(ESC_WAIT_LONG)
+                    sleep(ESC_WAIT_2SEC)
                 }
 
                 // 印刷終了

@@ -71,6 +71,7 @@ import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST
 import com.weatherprint.ConstantParameters.Companion.SM_L200_PRINTER
 import com.weatherprint.ConstantParameters.Companion.V2_PRO_PRINTER
+import com.weatherprint.ConstantParameters.Companion.MP_B20_PRINTER
 import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
 
@@ -579,7 +580,9 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                             if (deviceName == V2_PRO_PRINTER ||
                                 deviceName == MPT_II_PRINTER ||
-                                deviceName.startsWith(SM_L200_PRINTER)) {
+                                deviceName == (MP_B20_PRINTER) ||
+                                deviceName.startsWith(SM_L200_PRINTER)
+                                ) {
                                 // 内蔵プリンタを検知した場合
                                 findDevice = true
                                 Log.i(APP_LOG_TAG, "接続デバイス：$deviceName -> $deviceHardwareAddress")
@@ -595,17 +598,17 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
                                     return@TextButton
                                 } catch(e: Exception) {
                                     Log.e(APP_LOG_TAG, e.toString())
-                                    dialogTitle.value = "プリンタエラー"
-                                    dialogText.value = "内蔵プリンタが見つかりません"
+                                    dialogTitle.value = "Bluetooth接続エラー"
+                                    dialogText.value = "Bluetooth接続処理でエラーが発生しました"
                                     alertVisible.value = true
                                     return@TextButton
                                 }
                             }
                         }
-                        // 内蔵プリンタが見つからない場合
+                        // 対応プリンタが見つからない場合
                         if (!findDevice) {
                             dialogTitle.value = "プリンタエラー"
-                            dialogText.value = "内蔵プリンタが見つかりません"
+                            dialogText.value = "対応プリンタが見つかりません"
                             alertVisible.value = true
                             return@TextButton
                         }

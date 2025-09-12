@@ -13,7 +13,7 @@ class ConstantParameters {
         // -------------------------
 
         // アプリバージョン
-        const val APP_VERSION: String = "1.1.0"
+        const val APP_VERSION: String = "1.2.0"
 
         // アプリ名称
         const val APP_NAME = "WeatherPrint for Thermal Printer"
@@ -24,7 +24,7 @@ class ConstantParameters {
         // ログ出力関連
         const val APP_LOG_TAG: String = "WeatherPrintLog"
 
-        // 天気用法APIベースURL
+        // 天気予報APIベースURL
         const val BASE_URL: String = "https://weather.tsukumijima.net/api/"
 
         // Bluetooth関連
@@ -33,12 +33,18 @@ class ConstantParameters {
         // Database Key ID
         const val DB_KEY_ID: Int = 0
 
-        // プリンター関連
+        // プリンターデバイス名定義
         const val V2_PRO_PRINTER: String  = "InnerPrinter"
         const val MPT_II_PRINTER: String  = "MPT-II"
         const val SM_L200_PRINTER: String = "STAR L200"
 
+        const val MP_B20_PRINTER: String = "MP-B20"
+
         // 印刷ウェイト
+        const val ESC_WAIT_5SEC: Long = 5000
+        const val ESC_WAIT_3SEC: Long = 3000
+        const val ESC_WAIT_2SEC: Long = 2000
+        const val ESC_WAIT_1SEC: Long = 1000
         const val ESC_WAIT_LONG: Long = 20
         const val ESC_WAIT_MIDDLE: Long = 10
         const val ESC_WAIT_SHORT: Long = 5
@@ -89,6 +95,10 @@ class ConstantParameters {
 
         // 複数行改行 "ESC d n"
         val ESC_MULTI_FEED = byteArrayOf(0x1B.toByte(), 0x64.toByte(), 0x03.toByte())
+
+        // 指定ピッチ改行 "ESC J n" 改行量 ＝ n × 0.125mm
+        val ESC_FINE_FEED_N15 = byteArrayOf(0x1B.toByte(), 0x4A.toByte(), 0x0F.toByte())
+        val ESC_FINE_FEED_N07 = byteArrayOf(0x1B.toByte(), 0x4A.toByte(), 0x07.toByte())
 
         // 画像表示 "GS v 0 m wL wH hL hH 画像のバイト列"
         // 画像の横幅wと高さhを表す「wL wH hL hH」の横幅wの指定は８で割る必要あり
