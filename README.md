@@ -40,7 +40,7 @@ SUNMI V2 PRO を入手した際、もっと内蔵サーマルプリンターを�
   
 ## 動作確認機種  
 ・SUNMI V1s、SUNMI V2、V2 PRO foodpandaモデル  
-　※V1、V2s PLUS、V3、V3H については現在未検証です。  
+　※V1、V2s、V2s PLUS、V3、V3H については現在未検証です。  
 　※コマンドセットは「ESC/POS」を使用しています。  
 　※文字コードは「UTF-8」を使用しています。  
   
