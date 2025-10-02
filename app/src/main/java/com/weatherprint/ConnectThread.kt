@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.weatherprint.ConstantParameters.Companion.MJ_Q20DB_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MP_B20_PRINTER
 import com.weatherprint.ConstantParameters.Companion.SM_L200_PRINTER
@@ -42,6 +43,8 @@ class ConnectThread(device: BluetoothDevice, weatherData: WeatherData, deviceNam
             manageMyConnectedSocket(socket, printData)
         } else if (strPrinter == MPT_II_PRINTER) {
                 manageMyConnectedSocketMPTII(socket, printData)
+        } else if (strPrinter == MJ_Q20DB_PRINTER) {
+            manageMyConnectedSocketMJQ20DB(socket, printData)
         } else if (strPrinter == MP_B20_PRINTER) {
             manageMyConnectedSocketMPB20(socket, printData)
         } else if (strPrinter.startsWith(SM_L200_PRINTER)) {
@@ -72,6 +75,13 @@ fun manageMyConnectedSocketMPTII(socket: BluetoothSocket, printData: WeatherData
     val ConnectedThreadMPTII = ConnectedThreadMPTII(socket, printData)
     ConnectedThreadMPTII.start()
     ConnectedThreadMPTII.join()
+}
+
+// MJ-Q20DB 向け印刷実行（英語のみ・簡易版印刷）
+fun manageMyConnectedSocketMJQ20DB(socket: BluetoothSocket, printData: WeatherData) {
+    val ConnectedThreadMJQ20DB = ConnectedThreadMJQ20DB(socket, printData)
+    ConnectedThreadMJQ20DB.start()
+    ConnectedThreadMJQ20DB.join()
 }
 
 // SM-L200 向け印刷実行

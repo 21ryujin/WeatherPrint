@@ -67,6 +67,7 @@ import com.weatherprint.ui.theme.WeatherPrintTheme
 import com.weatherprint.ConstantParameters.Companion.APP_LOG_TAG
 import com.weatherprint.ConstantParameters.Companion.APP_VERSION
 import com.weatherprint.ConstantParameters.Companion.DB_KEY_ID
+import com.weatherprint.ConstantParameters.Companion.MJ_Q20DB_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST
 import com.weatherprint.ConstantParameters.Companion.SM_L200_PRINTER
@@ -580,8 +581,9 @@ fun WeatherPrint(name: String, modifier: Modifier = Modifier) {
 
                             if (deviceName == V2_PRO_PRINTER ||
                                 deviceName == MPT_II_PRINTER ||
-                                deviceName == (MP_B20_PRINTER) ||
-                                deviceName.startsWith(SM_L200_PRINTER)
+                                deviceName == MP_B20_PRINTER ||
+                                deviceName.startsWith(SM_L200_PRINTER) ||
+                                deviceName == MJ_Q20DB_PRINTER
                                 ) {
                                 // 内蔵プリンタを検知した場合
                                 findDevice = true
