@@ -1,6 +1,6 @@
 /**
  * ------------------------------------------------------------
- * サーマルプリンターへの印刷実行（MPT-II 向け）
+ * サーマルプリンターへの印刷実行（MJ-Q20DB 向け）
  * ------------------------------------------------------------
  */
 package com.weatherprint
@@ -39,7 +39,7 @@ import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_3SEC
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_5SEC
 import com.weatherprint.ConstantParameters.Companion.NARROW_AREA_LIST_EN
 
-class ConnectedThreadMPTII(
+class ConnectedThreadMJQ20DB(
     private val mmSocket: BluetoothSocket, weatherData: WeatherData) : Thread() {
 
         // 天気予報APIから取得したデータの格納
@@ -59,7 +59,7 @@ class ConnectedThreadMPTII(
         override fun run() {
 
             try {
-                Log.i(APP_LOG_TAG, "ConnectedThreadMPTII START")
+                Log.i(APP_LOG_TAG, "ConnectedThreadMJQ20DB START")
 
                 // 初回の印刷かを判定
                 var isFirstPrint: Boolean = false
@@ -93,7 +93,9 @@ class ConnectedThreadMPTII(
 
                     // 初回の印刷出力のみ用紙フィード：３行
                     if (!isFirstPrint) {
-                        mmOutStream.write(ESC_MULTI_FEED)
+                        for (i in 0..2 ) {
+                            singleLF()
+                        }
                         isFirstPrint = true
                     }
 
@@ -102,11 +104,11 @@ class ConnectedThreadMPTII(
                     mmOutStream.write(ESC_WB_REVERS_ON)
                     mmOutStream.write(ESC_ALIGN_CENTER)
                     if (i == 0) {
-                        singleText("     Today     ", true)
+                        singleText("    Today     ", true)
                     } else if ( i == 1 ) {
-                        singleText("   Tomorrow    ", true)
+                        singleText("   Tomorrow   ", true)
                     } else {
-                        singleText("   In 2 days   ", true)
+                        singleText("  In 2 days   ", true)
                     }
                     mmOutStream.write(ESC_WB_REVERS_OFF)
 
@@ -346,13 +348,17 @@ class ConnectedThreadMPTII(
                     singleText(APP_CREDIT, true)
 
                     // 用紙フィード：３行
-                    mmOutStream.write(ESC_MULTI_FEED)
+                    for (i in 0..2 ) {
+                        singleLF()
+                    }
 
                     // 切り取り線
                     singleText("-------------------------------", true)
 
                     // 用紙フィード：３行
-                    mmOutStream.write(ESC_MULTI_FEED)
+                    for (i in 0..2 ) {
+                        singleLF()
+                    }
 
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
@@ -360,7 +366,7 @@ class ConnectedThreadMPTII(
                 }
 
                 // 印刷終了
-                Log.i(APP_LOG_TAG, "ConnectedThreadMPTII END")
+                Log.i(APP_LOG_TAG, "ConnectedThreadMJQ20DB END")
 
             } catch (e: IOException) {
                 Log.i(TAG, "Input stream was disconnected", e)
