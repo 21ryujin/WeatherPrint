@@ -61,7 +61,7 @@ SUNMI V2 PRO を入手した際、もっと内蔵サーマルプリンターを�
 　※コマンドセットは「ESC/POS」を使用しています。  
 　※文字コードは「Shift-JIS」を使用しています。
   
-・業務用多機能スマホクリップ MJ-Q20DB
+・業務用多機能スマホクリップ MJ-Q20DB  
 　※Ver 1.3.0より対応。  
 　※AliExpressで購入した、SUNMI V series の様な形をしたスマホクリップです。  
 　　https://ja.aliexpress.com/item/1005008261736882.html?channel=twinner  
@@ -71,11 +71,11 @@ SUNMI V2 PRO を入手した際、もっと内蔵サーマルプリンターを�
 ## 使用要件  
 ・サーマルプリンタとの通信にBluetoothを使用します。  
 ・天気予報取得のため、インターネットに接続します。  
-・Androidの仕様上の関係で、Bluetoothの仕様に位置情報の使用権限許可が必要となります（アプリ内で位置情報は使用していません）。  
+・Androidの仕様上、Bluetooth使用時に位置情報の使用権限許可が必要となります（アプリ内で位置情報は使用していません）。  
   
 ## インストール方法  
-１）「WeatherPrint.zip」を解凍し、「WeatherPrint.apk」を取り出す。  
-２）「WeatherPrint.apk」をUSBメモリなどにコピーする。  
+１）「WeatherPrint.apk」をダウンロードする。
+２）「WeatherPrint.apk」をUSBメモリ等にコピーする。  
 ３）「WeatherPrint.apk」をUSBメモリ等からスマホにコピーする。  
 ４）「WeatherPrint.apk」をタップし、パッケージインストーラーを起動する。  
 ５）画面の指示に従ってインストールする。  
@@ -90,7 +90,7 @@ SUNMI V2 PRO を入手した際、もっと内蔵サーマルプリンターを�
 　４）コマンドプロンプトを起動し、１）のディレクトリに移動。  
 　５）adb install WeatherPrint.apk　でインストールを実行。  
 　６）コマンドを実行すると「Performing Streamed Install」と表示。  
-　７）「Success」でインストール完了。  
+　７）「Success」と表示されたらインストール完了。  
   
 ## 事前準備  
 ・Bluetoothをオンにしてください。  
