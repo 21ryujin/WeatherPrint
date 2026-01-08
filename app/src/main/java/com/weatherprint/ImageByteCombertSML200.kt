@@ -10,13 +10,13 @@ class ImageByteConvertSML200 {
 
 /**
  *  天気シンボルデータ生成
- *  晴：sunBits
- *  曇：cloudBits
- *  雨：rainBits
- *  雪：snowBits
- *  時々・一時：barBits
- *  のち：slashBits
- *  空白：spaceBits
+ *  晴：sunBits24
+ *  曇：cloudBits24
+ *  雨：rainBits24
+ *  雪：snowBits24
+ *  時々・一時：barBits24
+ *  のち：slashBits24
+ *  空白：spaceBits24
  */
 fun makeSymbolSML200(telop: String) : MakeSymbolData {
 
@@ -47,7 +47,16 @@ fun makeSymbolSML200(telop: String) : MakeSymbolData {
     // 正規表現：止む の複合判定用
     val regexLastStop = Regex(".+止む")
 
-    // 以下、テロップ文字列から天気シンボルのデータを生成
+    // 正規表現：雨か雪 の複合判定用
+    val regexLastRainOrSnow = Regex(".+雨か雪")
+
+    // 正規表現：雪か雨 の複合判定用
+    val regexLastSnowOrRain = Regex(".+雪か雨")
+
+    // ----------------------------------------
+    // 単一シンボルのケース
+    // ----------------------------------------
+
     // 「晴れ」のみ
     if (telop=="晴れ") {
         makeSymbolData.secondLetter = sunBits24
@@ -60,16 +69,35 @@ fun makeSymbolSML200(telop: String) : MakeSymbolData {
     else if (telop=="雨") {
         makeSymbolData.secondLetter = rainBits24
     }
+    // 「雨か雪」のみ
+    else if (telop=="雨か雪") {
+        makeSymbolData.secondLetter = rainBits24
+    }
     // 「雪」のみ
     else if (telop=="雪") {
         makeSymbolData.secondLetter = snowBits24
     }
-    // 「時々」「一時」「のち」を含む
+    // 「雪か雨」のみ
+    else if (telop=="雪か雨") {
+        makeSymbolData.secondLetter = snowBits24
+    }
+    // 「風雪強い」のみ
+    else if (telop=="風雪強い") {
+        makeSymbolData.secondLetter = snowBits24
+    }
+    // 「暴風雪」のみ
+    else if (telop=="暴風雪") {
+        makeSymbolData.secondLetter = snowBits24
+    }
+
+    // ----------------------------------------
+    // 「時々」「一時」「のち」を含むケース
+    // ----------------------------------------
     else if (telop.matches(regexSometimes) ||
              telop.matches(regexTemporary) ||
              telop.matches(regexAfter)) {
 
-        // セカンドトレターの判定
+        // ----- セカンドトレターの判定 -----
         if (telop.matches(regexAfter)) {
             // 「のち」→「／」
             makeSymbolData.secondLetter = slashBits24
@@ -78,7 +106,7 @@ fun makeSymbolSML200(telop: String) : MakeSymbolData {
             makeSymbolData.secondLetter = barBits24
         }
 
-        // ファーストレターの判定
+        // ----- ファーストレターの判定 -----
         if (telop.matches(regexHeadSun)) {
             // 晴
             makeSymbolData.firstLetter = sunBits24
@@ -96,7 +124,7 @@ fun makeSymbolSML200(telop: String) : MakeSymbolData {
             makeSymbolData.firstLetter = snowBits24
         }
 
-        // サードレターの判定
+        // ----- サードレターの判定 -----
         if (telop.matches(regexLastSun)) {
             // 晴
             makeSymbolData.thirdLetter = sunBits24
@@ -104,6 +132,14 @@ fun makeSymbolSML200(telop: String) : MakeSymbolData {
         else if (telop.matches(regexLastCloud)) {
             // 曇
             makeSymbolData.thirdLetter = cloudBits24
+        }
+        else if (telop.matches(regexLastRainOrSnow)) {
+            // 雨か雪（先に来る方のシンボルを割り当てる）
+            makeSymbolData.thirdLetter = rainBits24
+        }
+        else if (telop.matches(regexLastSnowOrRain)) {
+            // 雪か雨（先に来る方のシンボルを割り当てる）
+            makeSymbolData.thirdLetter = snowBits24
         }
         else if (telop.matches(regexLastRain)) {
             // 雨

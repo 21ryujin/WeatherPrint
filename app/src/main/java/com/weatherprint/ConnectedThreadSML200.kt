@@ -114,13 +114,16 @@ class ConnectedThreadSML200(
                         singleText("  ", true)
                     }
                     mmOutStream.write(ESC_SML200_REVERSE_OFF)
+                    mmOutStream.write(ESC_SML200_SIZE_H0_W0)
+                    singleText("(" + printData.forecasts[i].date + ")", true)
+                    singleLF()
 
                     // 発表日時と管区気象台
                     mmOutStream.write(ESC_SML200_SIZE_H0_W0)
                     mmOutStream.write(ESC_SML200_ALIGN_CENTER)
+                    multiText(printData.publishingOffice, true)
                     singleText(printData.publicTimeFormatted + " ", false)
-                    multiText("時点", true)
-                    multiText(printData.publishingOffice + "発表", true)
+                    multiText("発表", true)
                     singleLF()
 
                     // 地域指定
@@ -245,7 +248,11 @@ class ConnectedThreadSML200(
                     multiText("＝＝＝＝＝風の状況＝＝＝＝＝", true)
                     mmOutStream.write(ESC_SML200_4MM_FEED)
                     mmOutStream.write(ESC_SML200_SIZE_H0_W0)
-                    multiText(printData.forecasts[i].detail.wind, true)
+                    if (printData.forecasts[i].detail.wind == null) {
+                        multiText("（情報なし）", true)
+                    } else {
+                        multiText(printData.forecasts[i].detail.wind, true)
+                    }
                     singleLF()
 
                     // 波の高さ

@@ -108,6 +108,8 @@ class ConnectedThreadMPTII(
                     } else {
                         singleText("   In 2 days   ", true)
                     }
+                    mmOutStream.write(ESC_FONT_SIZE_1)
+                    singleText("         (" + printData.forecasts[i].date + ")         ", true)
                     mmOutStream.write(ESC_WB_REVERS_OFF)
 
                     // バッファ放出＆スリープ（処理落ち防止）
@@ -118,7 +120,7 @@ class ConnectedThreadMPTII(
                     singleLF()
                     mmOutStream.write(ESC_FONT_SIZE_1)
                     mmOutStream.write(ESC_ALIGN_CENTER)
-                    singleText(" Announcement at", true)
+                    singleText("Announcement at", true)
                     singleText(printData.publicTimeFormatted, true)
                     singleLF()
 
@@ -157,103 +159,9 @@ class ConnectedThreadMPTII(
                         sleep(ESC_WAIT_SHORT)
                     }
 
-                    // 天気テキスト
-                    // テキスト組み立て用変数
-                    var firstText: String = " "
-                    var secondText: String = " "
-                    var thirdText: String = " "
+                    // 天気テキストを英文に変換
+                    val weatherText = makeEnTelop(printData.forecasts[i].telop)
 
-                    // 正規表現：時々・一時・のち 判定用
-                    val regexOccasional = Regex(".+時々.+")
-                    val regexSometimes = Regex(".+一時.+")
-                    val regexAfter = Regex(".+のち.+")
-
-                    // 正規表現：晴 の複合判定用
-                    val regexHeadSun = Regex("晴.+")
-                    val regexLastSun = Regex(".+晴")
-
-                    // 正規表現：曇 の複合判定用
-                    val regexHeadCloud = Regex("曇.+")
-                    val regexLastCloud = Regex(".+曇")
-
-                    // 正規表現：雨 の複合判定用
-                    val regexHeadRain = Regex("雨.+")
-                    val regexLastRain = Regex(".+雨")
-
-                    // 正規表現：雪 の複合判定用
-                    val regexHeadSnow = Regex("雪.+")
-                    val regexLastSnow = Regex(".+雪")
-
-                    // 正規表現：止む の複合判定用
-                    val regexLastStop = Regex(".+止む")
-
-                    if (printData.forecasts[i].telop == "晴れ") {
-                        secondText = "Sunny"
-                    } else if (printData.forecasts[i].telop == "曇り") {
-                        secondText = "Cloudy"
-                    } else if (printData.forecasts[i].telop == "雨") {
-                        secondText = "Rainy"
-                    } else if (printData.forecasts[i].telop == "雪") {
-                        secondText = "Snowy"
-                    }
-                    else if (printData.forecasts[i].telop.matches(regexSometimes) ||
-                        printData.forecasts[i].telop.matches(regexOccasional) ||
-                        printData.forecasts[i].telop.matches(regexAfter)) {
-
-                        // セカンドトレターの判定
-                        if (printData.forecasts[i].telop.matches(regexAfter)) {
-                            // 「のち」→「then」
-                            secondText = ", and later "
-                        } else if (printData.forecasts[i].telop.matches(regexSometimes)) {
-                            // 「一時」→「sometimes」
-                            secondText = " and sometimes "
-                        } else if (printData.forecasts[i].telop.matches(regexOccasional)) {
-                            // 「時々」→「occasionally」
-                            secondText = " and occasionally "
-                        }
-
-                        // ファーストレターの判定
-                        if (printData.forecasts[i].telop.matches(regexHeadSun)) {
-                            // 晴
-                            firstText = "Sunny"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexHeadCloud)) {
-                            // 曇
-                            firstText = "Cloudy"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexHeadRain)) {
-                            // 雨
-                            firstText = "Rainy"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexHeadSnow)) {
-                            // 雪
-                            firstText = "Snowy"
-                        }
-
-                        // サードレターの判定
-                        if (printData.forecasts[i].telop.matches(regexLastSun)) {
-                            // 晴
-                            thirdText = "Sunny"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexLastCloud)) {
-                            // 曇
-                            thirdText = "Cloudy"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexLastRain)) {
-                            // 雨
-                            thirdText = "Rainy"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexLastSnow)) {
-                            // 雪
-                            thirdText = "Snowy"
-                        }
-                        else if (printData.forecasts[i].telop.matches(regexLastStop)) {
-                            // 雪
-                            thirdText = "Stop"
-                        }
-                    }
-
-                    val weatherText = firstText + secondText + thirdText
                     mmOutStream.write(ESC_ALIGN_CENTER)
                     mmOutStream.write(ESC_FONT_SIZE_2_H)
                     singleLF()

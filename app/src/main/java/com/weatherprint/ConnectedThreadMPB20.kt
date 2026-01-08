@@ -34,6 +34,7 @@ import com.weatherprint.ConstantParameters.Companion.APP_CREDIT
 import com.weatherprint.ConstantParameters.Companion.ESC_FINE_FEED_N07
 import com.weatherprint.ConstantParameters.Companion.ESC_FINE_FEED_N15
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_1SEC
+import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_2SEC
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_3SEC
 import com.weatherprint.ConstantParameters.Companion.ESC_WAIT_5SEC
 import java.nio.charset.Charset
@@ -110,15 +111,17 @@ class ConnectedThreadMPB20(
                         multiText(printData.forecasts[i].dateLabel + "の天気", false)
                         singleText("   ", true)
                     }
+                    mmOutStream.write(ESC_FONT_SIZE_1)
+                    singleText("          (" + printData.forecasts[i].date + ")          ", true)
                     mmOutStream.write(ESC_WB_REVERS_OFF)
                     mmOutStream.write(ESC_FINE_FEED_N15)
 
                     // 発表日時と管区気象台
                     mmOutStream.write(ESC_FONT_SIZE_1)
                     mmOutStream.write(ESC_ALIGN_CENTER)
+                    multiText(printData.publishingOffice, true)
                     singleText(printData.publicTimeFormatted + " ", false)
-                    multiText("時点", true)
-                    multiText(printData.publishingOffice + "発表", true)
+                    multiText("発表", true)
                     singleLF()
 
                     // 地域指定
@@ -245,7 +248,11 @@ class ConnectedThreadMPB20(
                     multiText("＝＝＝＝＝＝風の状況＝＝＝＝＝＝", true)
                     mmOutStream.write(ESC_FINE_FEED_N15)
                     mmOutStream.write(ESC_FONT_SIZE_1)
-                    multiText(printData.forecasts[i].detail.wind, true)
+                    if (printData.forecasts[i].detail.wind == null) {
+                        multiText("（情報なし）", true)
+                    } else {
+                        multiText(printData.forecasts[i].detail.wind, true)
+                    }
                     singleLF()
 
                     // 波の高さ
@@ -304,11 +311,13 @@ class ConnectedThreadMPB20(
                     // バッファ放出＆スリープ（処理落ち防止）
                     mmOutStream.flush()
                     if (printData.isOverview) {
-                        // 天気概況がある場合はウェイト５秒
+                        // 天気概況がある場合はウェイト７秒
                         sleep(ESC_WAIT_5SEC)
+                        sleep(ESC_WAIT_2SEC)
                     } else {
-                        // 天気概況がない場合はウェイト３秒
+                        // 天気概況がない場合はウェイト４秒
                         sleep(ESC_WAIT_3SEC)
+                        sleep(ESC_WAIT_1SEC)
                     }
                 }
 
