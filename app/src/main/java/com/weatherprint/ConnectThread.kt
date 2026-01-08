@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.weatherprint.ConstantParameters.Companion.D1_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MJ_Q20DB_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MPT_II_PRINTER
 import com.weatherprint.ConstantParameters.Companion.MP_B20_PRINTER
@@ -41,14 +42,14 @@ class ConnectThread(device: BluetoothDevice, weatherData: WeatherData, deviceNam
         // the connection in a separate thread.
         if (strPrinter == V2_PRO_PRINTER) {
             manageMyConnectedSocket(socket, printData)
-        } else if (strPrinter == MPT_II_PRINTER) {
-                manageMyConnectedSocketMPTII(socket, printData)
-        } else if (strPrinter == MJ_Q20DB_PRINTER) {
-            manageMyConnectedSocketMJQ20DB(socket, printData)
         } else if (strPrinter == MP_B20_PRINTER) {
             manageMyConnectedSocketMPB20(socket, printData)
         } else if (strPrinter.startsWith(SM_L200_PRINTER)) {
             manageMyConnectedSocketSML200(socket, printData)
+        } else if (strPrinter == MPT_II_PRINTER || strPrinter == D1_PRINTER) {
+            manageMyConnectedSocketMPTII(socket, printData)
+        } else if (strPrinter == MJ_Q20DB_PRINTER) {
+            manageMyConnectedSocketMJQ20DB(socket, printData)
         }
         cancel()
     }
@@ -70,6 +71,20 @@ fun manageMyConnectedSocket(socket: BluetoothSocket, printData: WeatherData) {
     connectedThread.join()
 }
 
+// MP-B20 向け印刷実行
+fun manageMyConnectedSocketMPB20(socket: BluetoothSocket, printData: WeatherData) {
+    val ConnectedThreadMPB20 = ConnectedThreadMPB20(socket, printData)
+    ConnectedThreadMPB20.start()
+    ConnectedThreadMPB20.join()
+}
+
+// SM-L200 向け印刷実行
+fun manageMyConnectedSocketSML200(socket: BluetoothSocket, printData: WeatherData) {
+    val ConnectedThreadSML200 = ConnectedThreadSML200(socket, printData)
+    ConnectedThreadSML200.start()
+    ConnectedThreadSML200.join()
+}
+
 // MPT-II 向け印刷実行（英語のみ・簡易版印刷）
 fun manageMyConnectedSocketMPTII(socket: BluetoothSocket, printData: WeatherData) {
     val ConnectedThreadMPTII = ConnectedThreadMPTII(socket, printData)
@@ -82,18 +97,4 @@ fun manageMyConnectedSocketMJQ20DB(socket: BluetoothSocket, printData: WeatherDa
     val ConnectedThreadMJQ20DB = ConnectedThreadMJQ20DB(socket, printData)
     ConnectedThreadMJQ20DB.start()
     ConnectedThreadMJQ20DB.join()
-}
-
-// SM-L200 向け印刷実行
-fun manageMyConnectedSocketSML200(socket: BluetoothSocket, printData: WeatherData) {
-    val ConnectedThreadSML200 = ConnectedThreadSML200(socket, printData)
-    ConnectedThreadSML200.start()
-    ConnectedThreadSML200.join()
-}
-
-// MP-B20 向け印刷実行
-fun manageMyConnectedSocketMPB20(socket: BluetoothSocket, printData: WeatherData) {
-    val ConnectedThreadMPB20 = ConnectedThreadMPB20(socket, printData)
-    ConnectedThreadMPB20.start()
-    ConnectedThreadMPB20.join()
 }

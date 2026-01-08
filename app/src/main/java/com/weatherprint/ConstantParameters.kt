@@ -13,7 +13,7 @@ class ConstantParameters {
         // -------------------------
 
         // アプリバージョン
-        const val APP_VERSION: String = "1.3.0"
+        const val APP_VERSION: String = "1.4.0"
 
         // アプリ名称
         const val APP_NAME = "WeatherPrint for Thermal Printer"
@@ -37,9 +37,9 @@ class ConstantParameters {
         const val V2_PRO_PRINTER: String  = "InnerPrinter"
         const val MPT_II_PRINTER: String  = "MPT-II"
         const val SM_L200_PRINTER: String = "STAR L200"
-        const val MJ_Q20DB_PRINTER: String = "Barcode+Printer"
-
         const val MP_B20_PRINTER: String = "MP-B20"
+        const val MJ_Q20DB_PRINTER: String = "Barcode+Printer"
+        const val D1_PRINTER: String = "D1"
 
         // 印刷ウェイト
         const val ESC_WAIT_5SEC: Long = 5000
