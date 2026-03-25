@@ -97,7 +97,7 @@ SUNMI V2 PRO を入手した際、もっと内蔵サーマルプリンターを�
 ・Androidの仕様上、Bluetooth使用時に位置情報の使用権限許可が必要となります（アプリ内で位置情報は使用していません）。  
   
 ## インストール方法  
-１）「WeatherPrint.apk」をダウンロードする。
+１）「WeatherPrint.apk」をダウンロードする。  
 ２）「WeatherPrint.apk」をUSBメモリ等にコピーする。  
 ３）「WeatherPrint.apk」をUSBメモリ等からスマホにコピーする。  
 ４）「WeatherPrint.apk」をタップし、パッケージインストーラーを起動する。  
